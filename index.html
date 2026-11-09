@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NT209 - Lập Trình Hệ Thống | Ứng Dụng Ôn Tập Lý Thuyết & Câu Hỏi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-badge">NT209</span>
+        <div class="logo-text">
+          <h1>Lập Trình Hệ Thống</h1>
+          <span>Đại học Công nghệ Thông tin - ĐHQG TP.HCM (UIT)</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="btn-theme" title="Chuyển đổi giao diện">
+          🌙 Giao diện tối
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <div class="nav-tabs-inner">
+      <button class="nav-tab-btn active" data-tab="theory">
+        📖 Đọc Lý Thuyết <span class="tab-badge">5 Chương</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="mcq">
+        📝 Trắc Nghiệm <span class="tab-badge">200 Câu</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="fill">
+        ✏️ Điền Ô Trống <span class="tab-badge">70 Câu</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="stats">
+        📊 Thống Kê & Điểm Số
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Panes -->
+  <main class="container">
+
+    <!-- 1. THEORY PANE -->
+    <section id="tab-theory" class="tab-pane active">
+      <div class="theory-layout">
+        <!-- Theory Sticky Sidebar -->
+        <aside class="theory-sidebar">
+          <div class="theory-sidebar-title">Mục lục lý thuyết</div>
+          <ul id="theory-nav-list" class="theory-nav-list"></ul>
+          
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--card-border);">
+            <div class="theory-sidebar-title">Slide bài giảng gốc (PDF)</div>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem;">
+              <li><a href="01-overview-V2026.pdf" target="_blank" style="color: var(--primary); text-decoration: none;">📄 Slide 01: Overview</a></li>
+              <li><a href="02-03-bits-ints-V2024.pdf" target="_blank" style="color: var(--primary); text-decoration: none;">📄 Slide 02-03: Bits & Ints</a></li>
+              <li><a href="04-machine-basics.pdf" target="_blank" style="color: var(--primary); text-decoration: none;">📄 Slide 04: Basics x86-64</a></li>
+              <li><a href="05-machine-control - 2022.pdf" target="_blank" style="color: var(--primary); text-decoration: none;">📄 Slide 05: Control Flow</a></li>
+              <li><a href="06-machine-procedures-v2025.pdf" target="_blank" style="color: var(--primary); text-decoration: none;">📄 Slide 06: Procedures</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Theory Content Cards -->
+        <div id="theory-content" class="theory-content"></div>
+      </div>
+    </section>
+
+    <!-- 2. MCQ PANE -->
+    <section id="tab-mcq" class="tab-pane">
+      <!-- Exam Mode Sticky Warning Bar -->
+      <div id="mcq-exam-bar" class="exam-bar">
+        <div>
+          <b>⏱️ Đang ở Chế độ Thi thử:</b> Đáp án và lời giải sẽ được ẩn cho đến khi bạn bấm nộp bài.
+        </div>
+        <button id="btn-submit-exam" class="btn-submit-exam">Nộp bài thi</button>
+      </div>
+
+      <!-- Controls & Filter Bar -->
+      <div class="controls-bar">
+        <div class="controls-row">
+          <div class="filter-group">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Chương:</span>
+            <button class="filter-btn mcq-ch-btn active" data-ch="all">Tất cả</button>
+            <button class="filter-btn mcq-ch-btn" data-ch="1">C1: Tổng quan</button>
+            <button class="filter-btn mcq-ch-btn" data-ch="2">C2: Bits & Ints</button>
+            <button class="filter-btn mcq-ch-btn" data-ch="3">C3: x86-64 Basics</button>
+            <button class="filter-btn mcq-ch-btn" data-ch="4">C4: Control Flow</button>
+            <button class="filter-btn mcq-ch-btn" data-ch="5">C5: Procedures</button>
+          </div>
+          <button id="mcq-exam-mode-btn" class="toggle-mode-btn">
+            💡 Chế độ: <b>Ôn luyện (Hiện đáp án)</b>
+          </button>
+        </div>
+
+        <div class="controls-row">
+          <div class="filter-group">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Lọc theo:</span>
+            <button class="filter-btn mcq-status-btn active" data-status="all">Tất cả</button>
+            <button class="filter-btn mcq-status-btn" data-status="unanswered">Chưa làm</button>
+            <button class="filter-btn mcq-status-btn" data-status="correct">Đã đúng</button>
+            <button class="filter-btn mcq-status-btn" data-status="wrong">Làm sai</button>
+            <button class="filter-btn mcq-status-btn" data-status="marked">Đã đánh dấu ⭐</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="text" id="mcq-search-input" class="search-input" placeholder="Tìm kiếm câu hỏi, từ khóa..." />
+            <span id="mcq-filter-count" style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">Hiển thị 200 / 200 câu</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Jump Palette Grid -->
+      <div class="palette-card">
+        <div class="palette-header">
+          <span class="palette-title">BẢNG NHẢY NHANH CÂU HỎI TRẮC NGHIỆM (1 - 200)</span>
+          <div class="palette-legend">
+            <div class="legend-item"><span class="legend-dot empty"></span> Chưa làm</div>
+            <div class="legend-item"><span class="legend-dot correct"></span> Trả lời đúng</div>
+            <div class="legend-item"><span class="legend-dot wrong"></span> Trả lời sai</div>
+            <div class="legend-item"><span class="legend-dot marked"></span> Đã đánh dấu (★)</div>
+          </div>
+        </div>
+        <div id="mcq-palette-grid" class="palette-grid"></div>
+      </div>
+
+      <!-- MCQ Questions List -->
+      <div id="mcq-questions-list" class="questions-list"></div>
+    </section>
+
+    <!-- 3. FILL-IN-THE-BLANK PANE -->
+    <section id="tab-fill" class="tab-pane">
+      <!-- Controls & Filter Bar -->
+      <div class="controls-bar">
+        <div class="controls-row">
+          <div class="filter-group">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Chương:</span>
+            <button class="filter-btn fill-ch-btn active" data-ch="all">Tất cả</button>
+            <button class="filter-btn fill-ch-btn" data-ch="1">C1: Tổng quan</button>
+            <button class="filter-btn fill-ch-btn" data-ch="2">C2: Bits & Ints</button>
+            <button class="filter-btn fill-ch-btn" data-ch="3">C3: x86-64 Basics</button>
+            <button class="filter-btn fill-ch-btn" data-ch="4">C4: Control Flow</button>
+            <button class="filter-btn fill-ch-btn" data-ch="5">C5: Procedures</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="text" id="fill-search-input" class="search-input" placeholder="Tìm kiếm câu hỏi điền từ..." />
+            <span id="fill-filter-count" style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">Hiển thị 70 / 70 câu</span>
+          </div>
+        </div>
+
+        <div class="controls-row">
+          <div class="filter-group">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Lọc theo:</span>
+            <button class="filter-btn fill-status-btn active" data-status="all">Tất cả</button>
+            <button class="filter-btn fill-status-btn" data-status="unanswered">Chưa làm</button>
+            <button class="filter-btn fill-status-btn" data-status="correct">Đã đúng</button>
+            <button class="filter-btn fill-status-btn" data-status="wrong">Làm sai</button>
+            <button class="filter-btn fill-status-btn" data-status="marked">Đã đánh dấu ⭐</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Jump Palette Grid -->
+      <div class="palette-card">
+        <div class="palette-header">
+          <span class="palette-title">BẢNG NHẢY NHANH CÂU HỎI ĐIỀN Ô TRỐNG (1 - 70)</span>
+          <div class="palette-legend">
+            <div class="legend-item"><span class="legend-dot empty"></span> Chưa làm</div>
+            <div class="legend-item"><span class="legend-dot correct"></span> Điền đúng</div>
+            <div class="legend-item"><span class="legend-dot wrong"></span> Điền sai</div>
+            <div class="legend-item"><span class="legend-dot marked"></span> Đã đánh dấu (★)</div>
+          </div>
+        </div>
+        <div id="fill-palette-grid" class="palette-grid"></div>
+      </div>
+
+      <!-- Fill Questions List -->
+      <div id="fill-questions-list" class="questions-list"></div>
+    </section>
+
+    <!-- 4. STATS & ANALYTICS PANE -->
+    <section id="tab-stats" class="tab-pane">
+      <div class="analytics-grid">
+        <div class="stat-card">
+          <span class="stat-title">TỔNG TIẾN ĐỘ HOÀN THÀNH</span>
+          <span id="stat-total-done" class="stat-value">0 / 270 (0%)</span>
+          <div class="progress-bar-container">
+            <div id="overall-progress-fill" class="progress-bar-fill"></div>
+          </div>
+          <span class="stat-desc">Bao gồm 200 câu trắc nghiệm và 70 câu điền ô trống</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">TỶ LỆ CHÍNH XÁC CHUNG</span>
+          <span id="stat-accuracy" class="stat-value" style="color: var(--success);">0% (0 câu đúng)</span>
+          <span class="stat-desc">Dựa trên các câu bạn đã bấm kiểm tra / chọn đáp án</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">TRẮC NGHIỆM KHÁCH QUAN</span>
+          <span id="stat-mcq" class="stat-value">0 / 0 đúng</span>
+          <span class="stat-desc">Tổng ngân hàng: 200 câu hỏi 4 lựa chọn</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-title">ĐIỀN VÀO Ô TRỐNG</span>
+          <span id="stat-fill" class="stat-value">0 / 0 đúng</span>
+          <span class="stat-desc">Tổng ngân hàng: 70 câu hỏi tính toán & thuật ngữ</span>
+        </div>
+      </div>
+
+      <!-- Chapter Breakdown Card -->
+      <div class="palette-card" style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--primary);">Tiến độ & Tỷ lệ đúng theo từng chương</h3>
+        <table class="table-theory">
+          <thead>
+            <tr>
+              <th>Chương môn học</th>
+              <th>Đã hoàn thành</th>
+              <th>Tiến độ</th>
+              <th>Kết quả chính xác</th>
+            </tr>
+          </thead>
+          <tbody id="stats-chapter-table"></tbody>
+        </table>
+      </div>
+
+      <!-- Reset Progress Card -->
+      <div class="reset-card">
+        <h3>Quản lý tiến độ học tập</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.35rem;">
+          Toàn bộ kết quả và câu trả lời của bạn được tự động lưu trong trình duyệt (LocalStorage).
+        </p>
+        <button id="btn-reset-all" class="btn-danger">
+          🗑️ Đặt lại toàn bộ tiến độ (Làm lại từ đầu)
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load Questions Data and App Logic -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
